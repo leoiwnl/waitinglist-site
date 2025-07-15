@@ -1,0 +1,51 @@
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px;">
+  <h2>Date Calculator</h2>
+
+  <label for="dateRequired">Date Required:</label><br>
+  <input type="date" id="dateRequired" style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+
+  <label for="leadTime">Lead Time (in weeks):</label><br>
+  <input type="number" id="leadTime" min="0" style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+
+  <div style="display: flex; gap: 10px; margin-top: 10px;">
+    <button onclick="calculateDates()" style="flex: 1; padding: 10px; font-family: Arial;">Calculate</button>
+    <button onclick="resetForm()" style="flex: 1; padding: 10px; font-family: Arial;">Reset</button>
+  </div>
+
+  <div id="output" style="margin-top: 20px; font-size: 1rem;"></div>
+</div>
+
+<script>
+  function calculateDates() {
+    const dateRequiredInput = document.getElementById('dateRequired').value;
+    const leadTimeWeeks = parseInt(document.getElementById('leadTime').value);
+
+    if (!dateRequiredInput || isNaN(leadTimeWeeks)) {
+      document.getElementById('output').innerText = "⚠️ Please enter both fields.";
+      return;
+    }
+
+    const dateRequired = new Date(dateRequiredInput);
+
+    // Book Date = Date Required + 7 * lead time days
+    const bookDate = new Date(dateRequired);
+    bookDate.setDate(bookDate.getDate() + (7 * leadTimeWeeks));
+
+    // Waiting List Date = Book Date + 28 days
+    const waitingListDate = new Date(bookDate);
+    waitingListDate.setDate(waitingListDate.getDate() + 28);
+
+    document.getElementById('output').innerHTML = `
+      <strong>📘 Book Date:</strong> ${bookDate.toDateString()} <br>
+      <strong>📋 Waiting List Date:</strong> ${waitingListDate.toDateString()}
+    `;
+  }
+
+  function resetForm() {
+    document.getElementById('dateRequired').value = "";
+    document.getElementById('leadTime').value = "";
+    document.getElementById('output').innerHTML = "";
+  }
+</script>
+
+
